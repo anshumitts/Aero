@@ -1,0 +1,236 @@
+<html>
+<head>
+<style type="text/css">
+	div{
+		position: absolute;
+		z-index: 0;
+	}
+	.main_img
+	{
+		position: absolute;
+		height: 100px;
+		width: 100px;
+		bottom: 0px;
+	}
+	.input{
+		top: 0px;
+		left: 10px;
+		z-index: 0;
+	}
+	.output{
+		left:420px;
+		top:0px;
+		z-index: 1;
+	}
+	table{
+		position: relative;
+	}
+</style>
+<script type="text/javascript">
+	var P              =1.225;
+	var gravity        =9.81;
+	var pi             =Math.PI;
+	var taper_ratio    =0.45;
+	function calc () {
+
+		var a=parseFloat(document.getElementById('1').value);
+		var b=parseFloat(document.getElementById('2').value);
+		var c=parseFloat(document.getElementById('3').value);
+		var d=parseFloat(document.getElementById('4').value);
+		var e=parseFloat(document.getElementById('5').value);
+		var f=parseFloat(document.getElementById('6').value);
+		var g=parseFloat(document.getElementById('7').value);
+		var h=parseFloat(document.getElementById('8').value);
+		var i=parseFloat(document.getElementById('9').value);
+		var j=parseFloat(document.getElementById('10').value);
+		taper_ratio=parseFloat(h);
+		var Wing_area          =a/b;
+		var Wing_span          =Math.sqrt(c*Wing_area);
+		var Wing_chord         =Wing_area/Wing_span;
+		var Cl3d               =(2*a*gravity)/(P*d*d*Wing_area);
+		var Cle3d              =(Cl3d*57.3)/e;
+		var Cle2d              =(Cle3d*pi*c)/(((pi*c)-Cle3d)*57.3);
+		var Cl2d               =Cle2d*e; 
+		//Using Design Software Iterate for angle of ATTACK e and air foil shape:: AirFoil Selected
+		var tail_area          =f*Wing_area/100;
+		var tail_span          =Math.sqrt(g*tail_area);
+		var tail_root_chord    =(2*tail_area)/(tail_span*(1+taper_ratio));
+		var tail_tip_chord     =tail_root_chord*taper_ratio;
+		var tail_setting_angle =(e-i)/57.3;
+		var pos_Aero_center    =0.25*Wing_chord;
+		var pos_CG             =(parseFloat(pos_Aero_center)+parseFloat(j));
+		var tail_pos           =(Cl3d*Wing_area*j)/(2*pi*(i/57.3)*tail_area);
+		{
+				var table = document.getElementById("insert");
+				table.innerHTML='';
+			    
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>Position of tail (Lt) </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+tail_pos+"\' required=''>";
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>Center of Gravity (Xcg) </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+pos_CG+"\' required=''>";
+
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>Aerodynamic center position (Xac) </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+pos_Aero_center+"\' required=''>";
+			    
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>Tail setting angle (it) </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+tail_setting_angle+"\' required=''>";
+			    
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>Tail tip chord (Ctip) </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+tail_tip_chord+"\' required=''>";
+			    
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>Tail root chord (Croot) </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+tail_root_chord+"\' required=''>";
+			    
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>Tail span (bt) </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+tail_span+"\' required=''>";
+			    
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>Tail area (St) </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+tail_area+"\' required=''>";
+			    
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>CL2D </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+Cl2d+"\' required=''>";
+			    
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>CL@2D </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+Cle2d+"\' required=''>";
+			    
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>CL@3D </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+Cle3d+"\' required=''>";
+			    
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>CL3D </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+Cl3d+"\' required=''>";
+			    
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>Wing chord (cw) </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+Wing_chord+"\' required=''>";
+			    
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>Wing span (bw) </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+Wing_span+"\' required=''>";
+			    
+
+			    var row = table.insertRow(0);
+			    var cell1 = row.insertCell(0);
+			    var cell2 = row.insertCell(1);
+			    cell1.innerHTML = "<font>Wing area (Swing) </font>";
+			    cell2.innerHTML = "<input type='name' name='name[]' value=\'"+Wing_area+"\' required=''>";
+		}
+	}
+</script>
+</head>
+<body>
+			<div class="input">
+				<table border="1">
+				<tr>
+					<td>Weight Of Aircraft:</td>
+					<td><input type="number" name="weight" id='1'></td>
+				</tr>
+
+				<tr>
+					<td>Wing Loading:</td>
+					<td><input type="number" name="weight" id='2'></td>
+				</tr>
+
+				<tr>
+					<td>Aspect Ratio Of wing:</td>
+					<td><input type="number" name="weight" id='3'></td>
+				</tr>
+
+				<tr>
+					<td>Velocity:</td>
+					<td><input type="number" name="weight" id='4'></td>
+				</tr>
+
+				<tr>
+					<td>Angle Of attack(degrees):</td>
+					<td><input type="number" name="weight" id='5'></td>
+				</tr>
+
+				<tr>
+					<td>%age for tail Area:(15-16)% :</td>
+					<td><input type="number" name="weight" id='6'></td>
+				</tr>
+
+				<tr>
+					<td> Aspect Ratio of tail :</td>
+					<td><input type="number" name="weight" id='7'></td>
+				</tr>
+
+				<tr>
+					<td> Taper Ratio of tail :</td>
+					<td><input type="number" name="weight" id='8'></td>
+				</tr>
+
+				<tr>
+					<td> Alpha - tail set angle (1-1.5)deg :</td>
+					<td><input type="number" name="weight" id='9'></td>
+				</tr>
+
+				<tr>
+					<td>X (2-3)cm :</td>
+					<td><input type="number" name="weight" id='10'></td>
+				</tr>
+				<tr>
+					<td> <input type="submit" onclick="calc()"></td>
+					<td><input type="reset" onclick="window.location.reload();"></td>
+				</tr>
+				</table>
+			</div>
+<div class="output">
+	<table id="insert" border="1px">
+	</table>
+</div>
+</body>
+</html>
